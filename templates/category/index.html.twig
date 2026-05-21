@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Categories{% endblock %}
+
+{% block body %}
+<section class="container">
+    <div class="section-heading">
+        <div>
+            <p class="eyebrow">Catalogue</p>
+            <h1>Categories</h1>
+        </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4">
+        {% for category in categories %}
+            <div class="col">
+                <a class="category-card" href="{{ path('category_show', { slug: category.slug }) }}">
+                    <img src="{{ asset('images/' ~ (category.imageFilename ?? 'item.png')) }}" alt="{{ category.name }}">
+                    <span>{{ category.name }}</span>
+                    <small>{{ category.description }}</small>
+                </a>
+            </div>
+        {% else %}
+            <div class="col-12">
+                <div class="empty-state">Aucune categorie disponible.</div>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

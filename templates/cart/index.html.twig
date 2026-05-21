@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Panier{% endblock %}
+
+{% block body %}
+<section class="container">
+    <div class="section-heading">
+        <div>
+            <p class="eyebrow">Commande</p>
+            <h1>Panier</h1>
+        </div>
+        <a class="btn btn-outline-dark" href="{{ path('app_home') }}">Continuer mes achats</a>
+    </div>
+
+    {% if lines is empty %}
+        <div class="empty-state">Votre panier est vide.</div>
+    {% else %}
+        <div class="cart-layout">
+            <div class="table-responsive">
+                <table class="table align-middle cart-table">
+                    <thead>
+                    <tr>
+                        <th>Produit</th>
+                        <th>Prix</th>
+                        <th>Quantite</th>
+                        <th>Total</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for line in lines %}
+                        {% set product = line.product %}
+                        <tr>
+                            <td>
+                                <div class="cart-product">
+                                    <img src="{{ asset('images/' ~ (product.imageFilename ?? 'item.png')) }}" alt="{{ product.name }}">
+                                    <div>
+                                        <strong>{{ product.name }}</strong>
+                                        <span>{{ product.category.name }}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{ product.price|number_format(2, '.', ' ') }} MAD</td>
+                            <td>
+                                <form class="quantity-form" action="{{ path('cart_update', { id: product.id }) }}" method="post">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('cart_update_' ~ product.id) }}">
+                                    <input class="form-control" type="number" name="quantity" min="0" value="{{ line.quantity }}">
+                                    <button class="btn btn-outline-primary btn-sm" type="submit">Modifier</button>
+                                </form>
+                            </td>
+                            <td>{{ line.lineTotal|number_format(2, '.', ' ') }} MAD</td>
+                            <td class="text-end">
+                                <form action="{{ path('cart_remove', { id: product.id }) }}" method="post">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('cart_remove_' ~ product.id) }}">
+                                    <button class="btn btn-outline-danger btn-sm" type="submit">Supprimer</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <aside class="summary-box">
+                <span>Total</span>
+                <strong>{{ total|number_format(2, '.', ' ') }} MAD</strong>
+                <form action="{{ path('cart_save') }}" method="post">
+                    <input type="hidden" name="_token" value="{{ csrf_token('cart_save') }}">
+                    <button class="btn btn-primary w-100" type="submit">Enregistrer le panier</button>
+                </form>
+            </aside>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+<section class="container auth-wrap">
+    <div class="auth-panel auth-panel-wide">
+        <p class="eyebrow">Nouveau client</p>
+        <h1>Inscription</h1>
+
+        {{ form_start(registrationForm) }}
+            <div class="row">
+                <div class="col-md-6">{{ form_row(registrationForm.fullName) }}</div>
+                <div class="col-md-6">{{ form_row(registrationForm.email) }}</div>
+                <div class="col-md-6">{{ form_row(registrationForm.phone) }}</div>
+                <div class="col-md-6">{{ form_row(registrationForm.address) }}</div>
+                <div class="col-md-6">{{ form_row(registrationForm.plainPassword.first) }}</div>
+                <div class="col-md-6">{{ form_row(registrationForm.plainPassword.second) }}</div>
+            </div>
+            <button class="btn btn-primary" type="submit">Creer le compte</button>
+        {{ form_end(registrationForm) }}
+    </div>
+</section>
+{% endblock %}

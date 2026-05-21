@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Produits TOP{% endblock %}
+
+{% block body %}
+<section class="container">
+    <div class="section-heading">
+        <div>
+            <p class="eyebrow">Selection</p>
+            <h1>Produits TOP</h1>
+        </div>
+        <a class="btn btn-outline-dark" href="{{ path('category_index') }}">Voir les categories</a>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4">
+        {% for product in products %}
+            <div class="col">
+                {% include 'product/_card.html.twig' with { product: product } %}
+            </div>
+        {% else %}
+            <div class="col-12">
+                <div class="empty-state">Aucun produit TOP pour le moment.</div>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

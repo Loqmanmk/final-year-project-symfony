@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil{% endblock %}
+
+{% block body %}
+<section class="container">
+    <div class="section-heading">
+        <div>
+            <p class="eyebrow">Espace client</p>
+            <h1>Profil</h1>
+        </div>
+    </div>
+
+    <div class="profile-layout">
+        <aside class="profile-box">
+            <h2>Informations personnelles</h2>
+            <dl>
+                <dt>Nom</dt>
+                <dd>{{ userProfile.fullName }}</dd>
+                <dt>Email</dt>
+                <dd>{{ userProfile.email }}</dd>
+                <dt>Telephone</dt>
+                <dd>{{ userProfile.phone ?: 'Non renseigne' }}</dd>
+                <dt>Adresse</dt>
+                <dd>{{ userProfile.address ?: 'Non renseignee' }}</dd>
+            </dl>
+        </aside>
+
+        <div class="orders-box">
+            <h2>Commandes passees</h2>
+            {% for order in orders %}
+                <article class="order-card">
+                    <div class="order-head">
+                        <div>
+                            <strong>Commande #{{ order.id }}</strong>
+                            <span>{{ order.createdAt|date('d/m/Y H:i') }}</span>
+                        </div>
+                        <span class="status-pill">{{ order.status }}</span>
+                    </div>
+                    <ul>
+                        {% for item in order.items %}
+                            <li>{{ item.productName }} x{{ item.quantity }} - {{ item.lineTotal|number_format(2, '.', ' ') }} MAD</li>
+                        {% endfor %}
+                    </ul>
+                    <div class="order-total">Total : {{ order.total|number_format(2, '.', ' ') }} MAD</div>
+                </article>
+            {% else %}
+                <div class="empty-state">Aucune commande enregistree.</div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

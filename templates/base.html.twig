@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}Our Store{% endblock %}</title>
+        {% block stylesheets %}
+            <link rel="stylesheet" href="/styles/app.css">
+        {% endblock %}
+
+        {% block javascripts %}
+        {% endblock %}
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-store">
+            <div class="container">
+                <a class="navbar-brand fw-semibold" href="{{ path('app_home') }}">Our Store</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="mainNav">
+                    <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+                        <li class="nav-item"><a class="nav-link" href="{{ path('app_home') }}">Produits TOP</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ path('category_index') }}">Categories</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ path('cart_index') }}">Panier</a></li>
+                        {% if app.user %}
+                            <li class="nav-item"><a class="nav-link" href="{{ path('profile_index') }}">Profil</a></li>
+                            <li class="nav-item navbar-text text-white-50">Bienvenue, {{ app.user.fullName }}</li>
+                            <li class="nav-item"><a class="btn btn-sm btn-light" href="{{ path('app_logout') }}">Deconnexion</a></li>
+                        {% else %}
+                            <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}">Connexion</a></li>
+                            <li class="nav-item"><a class="btn btn-sm btn-accent" href="{{ path('app_register') }}">Inscription</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <main class="page-shell">
+            <div class="container">
+                {% for label, messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ label == 'error' ? 'danger' : label }} shadow-sm" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+
+            {% block body %}{% endblock %}
+        </main>
+
+        <footer class="footer">
+            <div class="container d-flex flex-column flex-md-row justify-content-between gap-2">
+                <span>Our Store</span>
+                <span>Projet e-commerce Symfony</span>
+            </div>
+        </footer>
+    </body>
+</html>

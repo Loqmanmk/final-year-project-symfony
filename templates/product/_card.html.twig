@@ -1,0 +1,14 @@
+<article class="product-card h-100">
+    <a class="product-media" href="{{ path('product_show', { slug: product.slug }) }}">
+        <img src="{{ asset('images/' ~ (product.imageFilename ?? 'item.png')) }}" alt="{{ product.name }}">
+    </a>
+    <div class="product-body">
+        <a class="category-pill" href="{{ path('category_show', { slug: product.category.slug }) }}">{{ product.category.name }}</a>
+        <h2>{{ product.name }}</h2>
+        <p>{{ product.description|length > 88 ? product.description|slice(0, 88) ~ '...' : product.description }}</p>
+        <div class="product-actions">
+            <span class="price">{{ product.price|number_format(2, '.', ' ') }} MAD</span>
+            <a class="btn btn-sm btn-outline-primary" href="{{ path('product_show', { slug: product.slug }) }}">Details</a>
+        </div>
+    </div>
+</article>
