@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'app_user')]
@@ -21,6 +22,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
+    #[Assert\NotBlank(message: 'Veuillez saisir votre email.')]
+    #[Assert\Email(message: 'Veuillez saisir un email valide.')]
+    #[Assert\Length(max: 180, maxMessage: 'L email ne doit pas depasser {{ limit }} caracteres.')]
     private ?string $email = null;
 
     #[ORM\Column(type: 'json')]
@@ -30,12 +34,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(length: 120)]
+    #[Assert\NotBlank(message: 'Veuillez saisir votre nom complet.')]
+    #[Assert\Length(
+        min: 3,
+        max: 120,
+        minMessage: 'Le nom complet doit contenir au moins {{ limit }} caracteres.',
+        maxMessage: 'Le nom complet ne doit pas depasser {{ limit }} caracteres.'
+    )]
     private ?string $fullName = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Assert\NotBlank(message: 'Veuillez saisir votre adresse.')]
+    #[Assert\Length(min: 5, minMessage: 'L adresse doit contenir au moins {{ limit }} caracteres.')]
     private ?string $address = null;
 
     #[ORM\Column(length: 40, nullable: true)]
+    #[Assert\NotBlank(message: 'Veuillez saisir votre telephone.')]
+    #[Assert\Regex(
+        pattern: '/^\+?[0-9\s\-]{8,20}$/',
+        message: 'Veuillez saisir un numero de telephone valide.'
+    )]
     private ?string $phone = null;
 
     /**
