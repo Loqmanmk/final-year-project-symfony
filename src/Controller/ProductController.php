@@ -23,6 +23,12 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if (!$this->getUser()) {
+                $this->addFlash('warning', 'Vous devez vous connecter pour ajouter un produit au panier.');
+
+                return $this->redirectToRoute('app_login');
+            }
+
             $cartHandler->add($product, (int) $form->get('quantity')->getData());
             $this->addFlash('success', 'Produit ajoute au panier.');
 
